@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package packagerversion="1.4.8" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+ <name>Services_Blogging</name>
+ <channel>pear.php.net</channel>
+ <summary>Access your blog with PHP</summary>
+ <description>
+  API for accessing blog systems such as blogger, livejournal and others.
+ </description>
+ <lead>
+  <name>Anant Narayanan</name>
+  <user>anant</user>
+  <email>anant@php.net</email>
+  <active>yes</active>
+ </lead>
+ <lead>
+  <name>Christian Weiske</name>
+  <user>cweiske</user>
+  <email>cweiske@php.net</email>
+  <active>yes</active>
+ </lead>
+ <date>2007-01-27</date>
+ <version>
+  <release>0.1.0</release>
+  <api>0.1.0</api>
+ </version>
+ <stability>
+  <release>beta</release>
+  <api>beta</api>
+ </stability>
+ <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL Version 2.1</license>
+
+ <notes>
+  simple notice fix
+ </notes>
+
+ <contents>
+  <dir name="/" baseinstalldir="/">
+    <dir name="Services">
+      <file name="Blogging.php" role="php"/>
+      <dir name="Blogging">
+        <file name="Blog.php" role="php"/>
+        <file name="Driver.php" role="php"/>
+        <file name="Exception.php" role="php"/>
+        <file name="ExtendedDriver.php" role="php"/>
+        <file name="MediaObject.php" role="php"/>
+        <file name="MultipleBlogsInterface.php" role="php"/>
+        <file name="Post.php" role="php"/>
+        <file name="XmlRpc.php" role="php"/>
+        <dir name="Driver">
+          <file name="Blogger.php" role="php"/>
+          <file name="LiveJournal.php" role="php"/>
+          <file name="MetaWeblog.php" role="php"/>
+        </dir>
+      </dir>
+    </dir>
+    <dir name="examples" baseinstalldir="Services_Blogging">
+      <file name="autodiscover.php" role="doc"/>
+      <file name="blogger.cw.php" role="doc"/>
+      <file name="livejournal.cw.php" role="doc"/>
+    </dir>
+  </dir>
+ </contents>
+
+ <dependencies>
+  <required>
+   <php>
+    <min>5.1</min>
+    <max>6.0.0</max>
+   </php>
+   <pearinstaller>
+    <min>1.4.1</min>
+   </pearinstaller>
+   <package>
+    <name>XML_RPC</name>
+    <channel>pear.php.net</channel>
+   </package>
+  </required>
+ </dependencies>
+ <phprelease />
+
+ <changelog>
+  <release>
+   <version>
+    <release>0.0.4</release>
+    <api>0.0.4</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2006-06-27</date>
+   <notes>
+    docblock and other comments
+   </notes>
+  </release>
+
+  <release>
+   <version>
+    <release>0.0.3</release>
+    <api>0.0.3</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2006-05-14</date>
+   <notes>
+    autoDiscovery support via RSD
+   </notes>
+  </release>
+
+  <release>
+   <version>
+    <release>0.0.2</release>
+    <api>0.0.2</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2006-05-14</date>
+   <notes>
+    metaWeblog driver added
+   </notes>
+  </release>
+
+  <release>
+   <version>
+    <release>0.0.1</release>
+    <api>0.0.1</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2006-05-13</date>
+   <notes>
+    First version with support for Blogger and LiveJournal
+   </notes>
+  </release>
+ </changelog>
+</package>
