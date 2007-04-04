@@ -18,9 +18,9 @@
   <email>cweiske@php.net</email>
   <active>yes</active>
  </lead>
- <date>2007-01-27</date>
+ <date>2007-04-04</date>
  <version>
-  <release>0.1.0</release>
+  <release>0.1.1</release>
   <api>0.1.0</api>
  </version>
  <stability>
@@ -30,7 +30,7 @@
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL Version 2.1</license>
 
  <notes>
-  simple notice fix
+  Fixing bug #10354: MetaWeblog: dateCreated not valid w/ Patch (Markus Tacker)
  </notes>
 
  <contents>
@@ -79,6 +79,37 @@
  <phprelease />
 
  <changelog>
+
+  <release>
+   <version>
+    <release>0.1.1</release>
+    <api>0.1.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2007-04-04</date>
+   <notes>
+    Fixing bug #10354: MetaWeblog: dateCreated not valid w/ Patch (Markus Tacker)
+   </notes>
+  </release>
+
+  <release>
+   <version>
+    <release>0.1.0</release>
+    <api>0.1.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2007-01-21</date>
+   <notes>
+    simple notice fix
+   </notes>
+  </release>
+
   <release>
    <version>
     <release>0.0.4</release>
@@ -138,5 +169,6 @@
     First version with support for Blogger and LiveJournal
    </notes>
   </release>
+
  </changelog>
 </package>
