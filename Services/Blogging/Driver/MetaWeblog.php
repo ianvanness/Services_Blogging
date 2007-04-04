@@ -312,7 +312,7 @@ class Services_Blogging_Driver_MetaWeblog extends Services_Blogging_ExtendedDriv
         return new XML_RPC_Value(
             array(
                 'categories'  => new XML_RPC_Value($categories, 'array'),
-                'dateCreated' => date('Ymd\\TH:i:s', $time),
+                'dateCreated' => new XML_RPC_Value(date('Ymd\\TH:i:s', $time), 'dateTime.iso8601'),
                 'description' => new XML_RPC_Value($post->{Services_Blogging_Post::CONTENT}, 'string'),
                 'title'       => new XML_RPC_Value($post->{Services_Blogging_Post::TITLE}, 'string')
             ),
