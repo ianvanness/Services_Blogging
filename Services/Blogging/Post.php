@@ -2,34 +2,35 @@
 require_once 'Services/Blogging/Driver.php';
 
 /**
-*   Generic blog post object.
+* Generic blog post object.
 *
-*   This class defines a generic post object that may be used
-*   to send or receive data in a common format to blogs.
+* This class defines a generic post object that may be used
+* to send or receive data in a common format to blogs.
 *
-*   @category    Services
-*   @package     Services_Blogging
-*   @author      Anant Narayanan <anant@php.net>
-*   @author      Christian Weiske <cweiske@php.net>
-*   @license     http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+* @category Services
+* @package  Services_Blogging
+* @author   Anant Narayanan <anant@php.net>
+* @author   Christian Weiske <cweiske@php.net>
+* @license  http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+* @link     http://pear.php.net/package/Services_Blogging
 */
 class Services_Blogging_Post
 {
     /**
-    *   Array with property values.
+    * Array with property values.
     *
-    *   @var array
+    * @var array
     */
     protected $values = array(
         'id'    => null
     );
 
     /**
-    *   The driver that will be used (optional).
-    *   If set, the __set and __get methods can check if the
-    *   properties are allowed or not.
+    * The driver that will be used (optional).
+    * If set, the __set and __get methods can check if the
+    * properties are allowed or not.
     *
-    *   @var Services_Blogging_Driver
+    * @var Services_Blogging_Driver
     */
     protected $driver = null;
 
@@ -40,49 +41,49 @@ class Services_Blogging_Post
     */
 
     /**
-    *   Title of the blog post entry.
-    *   string
+    * Title of the blog post entry.
+    * string
     */
-    const TITLE      = 'title';
+    const TITLE = 'title';
 
     /**
-    *   Text/content for the entry.
+    * Text/content for the entry.
     */
-    const CONTENT    = 'content';
+    const CONTENT = 'content';
 
     /**
-    *   Date at which the post shall be published.
-    *   If set, it has to be a unix timestamp (int)
+    * Date at which the post shall be published.
+    * If set, it has to be a unix timestamp (int)
     */
-    const PUBDATE    = 'publishdate';
+    const PUBDATE = 'publishdate';
 
     /**
-    *   Date at which the post has been written.
-    *   If set, it has to be a unix timestamp (int)
+    * Date at which the post has been written.
+    * If set, it has to be a unix timestamp (int)
     */
-    const DATE       = 'date';
+    const DATE = 'date';
 
     /**
-    *   Where to find the entry. Read-only because
-    *   the blogging service determines it.
+    * Where to find the entry. Read-only because
+    * the blogging service determines it.
     */
-    const URL        = 'url';
+    const URL = 'url';
 
     /**
-    *   Array of categories (tags) to use.
+    * Array of categories (tags) to use.
     */
     const CATEGORIES = 'categories';
 
     /**
-    *   Not used yet
+    * Not used yet
     */
-    const LINK       = 'link';
-    const AUTHOR     = 'author';
-    const CATEGORY   = 'categories';
-    const COMMENTS   = 'comments';
-    const ENCLOSURE  = 'enclosure';
-    const GUID       = 'guid';
-    const SOURCE     = 'source';
+    const LINK      = 'link';
+    const AUTHOR    = 'author';
+    const CATEGORY  = 'categories';
+    const COMMENTS  = 'comments';
+    const ENCLOSURE = 'enclosure';
+    const GUID      = 'guid';
+    const SOURCE    = 'source';
 
 
 
@@ -94,9 +95,10 @@ class Services_Blogging_Post
 
 
     /**
-    *   Services_Blogging_Post constructor.
+    * Services_Blogging_Post constructor.
     *
-    *   @param Services_Blogging_Driver $driver  Optional driver object for further checks
+    * @param Services_Blogging_Driver $driver Optional driver object
+    *                                          for further checks
     */
     public function __construct($driver = null)
     {
@@ -105,17 +107,27 @@ class Services_Blogging_Post
 
 
 
+    /**
+    * Sets an object property
+    *
+    * @param string $strProperty Name of property
+    * @param mixed  $value       New value
+    *
+    * @return void
+    */
     public function __set($strProperty, $value)
     {
         if ($strProperty == 'id') {
             require_once 'Services/Blogging/Exception.php';
-            throw new Services_Blogging_Exception('"id" may be set via setId() only');
-
+            throw new Services_Blogging_Exception(
+                '"id" may be set via setId() only'
+            );
         } else if ($this->driver !== null
             && !$this->driver->isPostPropertySupported($strProperty)) {
             require_once 'Services/Blogging/Exception.php';
             throw new Services_Blogging_Exception(
-                'Post property "' . $strProperty . '" is not supported by this driver',
+                'Post property "' . $strProperty
+                 . '" is not supported by this driver',
                 self::ERROR_UNSUPPORTED_PROPERTY
             );
         }
@@ -125,6 +137,13 @@ class Services_Blogging_Post
 
 
 
+    /**
+    * Retrieves an object property
+    *
+    * @param string $strProperty Name of property
+    *
+    * @return mixed Property value
+    */
     public function __get($strProperty)
     {
         if ($strProperty == 'id') {
@@ -133,7 +152,8 @@ class Services_Blogging_Post
             && !$this->driver->isPostPropertySupported($strProperty)) {
             require_once 'Services/Blogging/Exception.php';
             throw new Services_Blogging_Exception(
-                'Post property "' . $strProperty . '" is not supported by this driver',
+                'Post property "' . $strProperty
+                 . '" is not supported by this driver',
                 self::ERROR_UNSUPPORTED_PROPERTY
             );
         } else if (!isset($this->values[$strProperty])) {
@@ -145,11 +165,13 @@ class Services_Blogging_Post
 
 
     /**
-    *   Sets the post id. This method should only be
-    *   used by the driver implementations that just uploaded
-    *   a post to the blog, and it got an id now.
+    * Sets the post id. This method should only be
+    * used by the driver implementations that just uploaded
+    * a post to the blog, and it got an id now.
     *
-    *   @param int  The blog post id
+    * @param int $id The blog post id
+    *
+    * @return void
     */
     public function setId($id)
     {
@@ -159,7 +181,12 @@ class Services_Blogging_Post
 
 
     /**
-    *   Set the driver object
+    * Set the driver object
+    *
+    * @param Services_Blogging_Driver $driver Driver object that is used
+    *                                          with this blog post
+    *
+    * @return void
     */
     public function setDriver($driver)
     {

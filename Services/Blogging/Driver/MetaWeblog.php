@@ -6,22 +6,23 @@ require_once 'Services/Blogging/XmlRpc.php';
 require_once 'XML/RPC.php';
 
 /**
-*   metaWeblog API implementation.
-*   http://www.xmlrpc.com/metaWeblogApi
-*   http://www.movabletype.org/mt-static/docs/mtmanual_programmatic.html
+* metaWeblog API implementation.
+* http://www.xmlrpc.com/metaWeblogApi
+* http://www.movabletype.org/mt-static/docs/mtmanual_programmatic.html
 *
-*   @category    Services
-*   @package     Services_Blogging
-*   @author      Anant Narayanan <anant@php.net>
-*   @author      Christian Weiske <cweiske@php.net>
-*   @license     http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+* @category Services
+* @package  Services_Blogging
+* @author   Anant Narayanan <anant@php.net>
+* @author   Christian Weiske <cweiske@php.net>
+* @license  http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+* @link     http://pear.php.net/package/Services_Blogging
 */
 class Services_Blogging_Driver_MetaWeblog extends Services_Blogging_ExtendedDriver
 {
 
     /**
-    *   Internal list with user data.
-    *   @var array
+    * Internal list with user data.
+    * @var array
     */
     protected $userdata = array();
 
@@ -36,22 +37,22 @@ class Services_Blogging_Driver_MetaWeblog extends Services_Blogging_ExtendedDriv
 
 
     /**
-    *   Constructor for the metaWeblog driver class.
+    * Constructor for the metaWeblog driver class.
     *
-    *   @param   string  $user       The username of the blog account.
-    *   @param   string  $pass       The password of the blog account.
-    *   @param   string  $server     The URI of the server to connect to.
-    *   @param   string  $path       The path to the XML-RPC server script.
+    * @param string $user   The username of the blog account.
+    * @param string $pass   The password of the blog account.
+    * @param string $server The URI of the server to connect to.
+    * @param string $path   The path to the XML-RPC server script.
     *
-    *   @throws Services_Blogging_Exception  If authentication fails
+    * @throws Services_Blogging_Exception  If authentication fails
     */
     public function __construct($user, $pass, $server, $path)
     {
         $this->userdata = array(
-            'user'  => $user,
-            'pass'  => $pass,
-            'server'=> $server,
-            'path'  => $path,
+            'user'      => $user,
+            'pass'      => $pass,
+            'server'    => $server,
+            'path'      => $path,
             'rpc_user'  => new XML_RPC_Value($user, 'string'),
             'rpc_pass'  => new XML_RPC_Value($pass, 'string'),
             'rpc_blogid'=> new XML_RPC_Value($user, 'string'),
@@ -61,17 +62,19 @@ class Services_Blogging_Driver_MetaWeblog extends Services_Blogging_ExtendedDriv
             $this->userdata['path'],
             $this->userdata['server']
         );
-//        $this->rpc_client->setDebug(true);
+        //$this->rpc_client->setDebug(true);
     }//public function __construct($userid, $pass, $server, $path)
 
 
 
     /**
-    *   Save a new post into the blog.
+    * Save a new post into the blog.
     *
-    *   @param Services_Blogging_Post $post     Post object to put online
+    * @param Services_Blogging_Post $post Post object to put online
     *
-    *   @throws Services_Blogging_Exception If an error occured
+    * @return void
+    *
+    * @throws Services_Blogging_Exception If an error occured
     */
     public function savePost(Services_Blogging_Post $post)
     {
@@ -86,7 +89,9 @@ class Services_Blogging_Driver_MetaWeblog extends Services_Blogging_ExtendedDriv
                     new XML_RPC_Value(true, 'boolean')
                 )
             );
-            $nPostId = Services_Blogging_XmlRpc::sendRequest($request, $this->rpc_client);
+            $nPostId = Services_Blogging_XmlRpc::sendRequest(
+                $request, $this->rpc_client
+            );
             $post->setId($nPostId);
         } else {
             //edit the post; it already exists
@@ -106,17 +111,18 @@ class Services_Blogging_Driver_MetaWeblog extends Services_Blogging_ExtendedDriv
 
 
     /**
-    *   The getPost method is intended to retrive a given post as an object of
-    *   the Services_Blogging_Post class; given the unique post id which is passed
-    *   as a parameter to the function.
+    * The getPost method is intended to retrive a given post as an object of
+    * the Services_Blogging_Post class; given the unique post id which is passed
+    * as a parameter to the function.
     *
-    *   @param   string  $id         The PostID of the post to be retrieved. (As
-    *                              returned by newPost() defined in
-    *                              Services_Blogging_driver).
-    *   @return  Services_Blogging_Post   The elements of the post returned as an
-    *                                   object of the Services_Blogging_Post class.
+    * @param string $id The PostID of the post to be retrieved. (As
+    *                    returned by newPost() defined in
+    *                    Services_Blogging_driver).
     *
-    *   @throws Services_Blogging_Exception  If the post does not exist
+    * @return Services_Blogging_Post The elements of the post returned as an
+    *                                object of the Services_Blogging_Post class.
+    *
+    * @throws Services_Blogging_Exception If the post does not exist
     */
     public function getPost($id)
     {
@@ -127,26 +133,29 @@ class Services_Blogging_Driver_MetaWeblog extends Services_Blogging_ExtendedDriv
                 $this->userdata['rpc_pass'],
             )
         );
-        $arData = Services_Blogging_XmlRpc::sendRequest($request, $this->rpc_client);
+        $arData = Services_Blogging_XmlRpc::sendRequest(
+            $request, $this->rpc_client
+        );
         return $this->convertStructToPost($arData);
     }//public function getPost($id)
 
 
 
     /**
-    *   Delete a given post.
-    *   The deletePost method in metaWeblog is just
-    *    an alias to the deletePost blogger method
+    * Delete a given post.
+    * The deletePost method in metaWeblog is just
+    *  an alias to the deletePost blogger method
     *
-    *   @param mixed  $post   Services_Blogging_Post object to delete,
-    *                          or post id (integer) to delete
-    *   @return boolean     True if deleted, false if not.
+    * @param mixed $post Services_Blogging_Post object to delete,
+    *                     or post id (integer) to delete
+    *
+    * @return boolean True if deleted, false if not.
     */
     public function deletePost($post)
     {
         if (!($post instanceof Services_Blogging_Post)) {
             $nPostId = $post;
-            $post = new Services_Blogging_Post();
+            $post    = new Services_Blogging_Post();
             $post->setId($nPostId);
         }
 
@@ -166,13 +175,13 @@ class Services_Blogging_Driver_MetaWeblog extends Services_Blogging_ExtendedDriv
 
 
     /**
-    *   Returns an array of recent posts as Services_Blogging_Post objects
+    * Returns an array of recent posts as Services_Blogging_Post objects
     *
-    *   @param   int     $number     The number of posts to be retrieved.
-    *                                   Defaults to 15
+    * @param int $number The number of posts to be retrieved.
+    *                     Defaults to 15
     *
-    *   @return  Array   An array of objects of the Services_Blogging_Post class that
-    *                  correspond to the number of posts requested.
+    * @return Array An array of objects of the Services_Blogging_Post class that
+    *                correspond to the number of posts requested.
     */
     public function getRecentPosts($number = 15)
     {
@@ -184,10 +193,12 @@ class Services_Blogging_Driver_MetaWeblog extends Services_Blogging_ExtendedDriv
                 new XML_RPC_Value($number, 'int')
             )
         );
-        $arData  = Services_Blogging_XmlRpc::sendRequest($request, $this->rpc_client);
+        $arData = Services_Blogging_XmlRpc::sendRequest(
+            $request, $this->rpc_client
+        );
         $arPosts = array();
         foreach ($arData as $data) {
-            $post = $this->convertStructToPost($data);
+            $post               = $this->convertStructToPost($data);
             $arPosts[$post->id] = $post;
         }
         return $arPosts;
@@ -196,23 +207,23 @@ class Services_Blogging_Driver_MetaWeblog extends Services_Blogging_ExtendedDriv
 
 
     /**
-    *   The getRecentPostTitles method is intended to retrieve the given number of
-    *   posts titles from a blog.
-    *   The posts themselves can be retrieved with getPost() or getRecentPosts().
+    * The getRecentPostTitles method is intended to retrieve the given number of
+    * posts titles from a blog.
+    * The posts themselves can be retrieved with getPost() or getRecentPosts().
     *
-    *   There is no direct getRecentPostTitles method in metaWeblog. So
-    *   we internally call getRecentPosts() and strip out ids and titles of
-    *   the post. So this method is slow here, because all post data needs
-    *   to be transmitted.
+    * There is no direct getRecentPostTitles method in metaWeblog. So
+    * we internally call getRecentPosts() and strip out ids and titles of
+    * the post. So this method is slow here, because all post data needs
+    * to be transmitted.
     *
-    *   @param   int     $number     The number of posts to be retrieved.
+    * @param int $number The number of posts to be retrieved.
     *
-    *   @return  Array   An array of int => strings representing the
-    *                   post ids (key) and their title (value).
+    * @return Array An array of int => strings representing the
+    *                post ids (key) and their title (value).
     */
     public function getRecentPostTitles($number = 15)
     {
-        $arPosts = $this->getRecentPosts($number);
+        $arPosts  = $this->getRecentPosts($number);
         $arTitles = array();
         foreach ($arPosts as $post) {
             $arTitles[$post->id] = $post->{Services_Blogging_Post::TITLE};
@@ -223,11 +234,11 @@ class Services_Blogging_Driver_MetaWeblog extends Services_Blogging_ExtendedDriv
 
 
     /**
-    *   Returns an array of strings thay define
-    *   the properties that a post to this blog may
-    *   have.
+    * Returns an array of strings thay define
+    * the properties that a post to this blog may
+    * have.
     *
-    *   @return array   Array of strings
+    * @return array Array of strings
     */
     public function getSupportedPostProperties()
     {
@@ -237,12 +248,12 @@ class Services_Blogging_Driver_MetaWeblog extends Services_Blogging_ExtendedDriv
 
 
     /**
-    *   Checks if the given property name/id is supported
-    *   for this driver.
+    * Checks if the given property name/id is supported
+    * for this driver.
     *
-    *   @param string $strProperty  Property name/id to check
+    * @param string $strProperty Property name/id to check
     *
-    *   @return boolean     If the property is supported
+    * @return boolean If the property is supported
     */
     public function isPostPropertySupported($strProperty)
     {
@@ -252,28 +263,30 @@ class Services_Blogging_Driver_MetaWeblog extends Services_Blogging_ExtendedDriv
 
 
     /**
-    *   Converts a struct returned by the webservice to
-    *   a Services_Blogging_Post object
+    * Converts a struct returned by the webservice to
+    * a Services_Blogging_Post object
     *
-    *   @param array    $arStruct   Struct to convert
-    *   @return Services_Blogging_Post  Converted post
+    * @param array $arStruct Struct to convert
+    *
+    * @return Services_Blogging_Post Converted post
     */
     protected function convertStructToPost($arStruct)
     {
         $post = new Services_Blogging_Post($this);
+
         $post->{Services_Blogging_Post::CONTENT} = $arStruct['description'];
         $post->{Services_Blogging_Post::TITLE}   = $arStruct['title'];
         //0123456789012345678
         //20060514T09:19:33
-        $post->{Services_Blogging_Post::DATE}    = mktime(
-            substr($arStruct['dateCreated'],  9, 2),//hour
-            substr($arStruct['dateCreated'], 12, 2),//minute
-            substr($arStruct['dateCreated'], 15, 2),//second
-            substr($arStruct['dateCreated'],  4, 2),//month
-            substr($arStruct['dateCreated'],  6, 2),//day
-            substr($arStruct['dateCreated'],  0, 4)//year
+        $post->{Services_Blogging_Post::DATE} = mktime(
+            substr($arStruct['dateCreated'],  9, 2), //hour
+            substr($arStruct['dateCreated'], 12, 2), //minute
+            substr($arStruct['dateCreated'], 15, 2), //second
+            substr($arStruct['dateCreated'],  4, 2), //month
+            substr($arStruct['dateCreated'],  6, 2), //day
+            substr($arStruct['dateCreated'],  0, 4)  //year
         );
-        $post->{Services_Blogging_Post::URL}        = $arStruct['link'];
+        $post->{Services_Blogging_Post::URL} = $arStruct['link'];
         if (!isset($arStruct['categories'])) {
             $arStruct['categories'] = array();
         }
@@ -286,11 +299,12 @@ class Services_Blogging_Driver_MetaWeblog extends Services_Blogging_ExtendedDriv
 
 
     /**
-    *   Converts Services_Blogging_Post object to
-    *   an XML-RPC struct that can be sent to the server.
+    * Converts Services_Blogging_Post object to
+    * an XML-RPC struct that can be sent to the server.
     *
-    *   @param Services_Blogging_Post  $post    Post object to convert
-    *   @param XML_RPC_Value    Struct to send
+    * @param Services_Blogging_Post $post Post object to convert
+    *
+    * @return void
     */
     protected function convertPostToStruct($post)
     {
@@ -302,7 +316,7 @@ class Services_Blogging_Driver_MetaWeblog extends Services_Blogging_ExtendedDriv
         if (!is_array($categories)) {
             $categories = array();
         } else {
-            $catstr = $categories;
+            $catstr     = $categories;
             $categories = array();
             foreach ($catstr as $cat) {
                 $categories[] = new XML_RPC_Value($cat, 'string');

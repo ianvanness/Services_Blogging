@@ -5,30 +5,31 @@ require_once 'Services/Blogging/XmlRpc.php';
 require_once 'XML/RPC.php';
 
 /**
-*   LiveJournal API implementation.
+* LiveJournal API implementation.
 *
-*   This class implements the LiveJournal XML-RPC API described at
-*   http://www.livejournal.com/doc/server/ljp.csp.xml-rpc.protocol.html
+* This class implements the LiveJournal XML-RPC API described at
+* http://www.livejournal.com/doc/server/ljp.csp.xml-rpc.protocol.html
 *
-*   @category    Services
-*   @package     Services_Blogging
-*   @author      Christian Weiske <cweiske@php.net>
-*   @license     http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+* @category Services
+* @package  Services_Blogging
+* @author   Christian Weiske <cweiske@php.net>
+* @license  http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+* @link     http://pear.php.net/package/Services_Blogging
 */
 class Services_Blogging_Driver_LiveJournal
     extends Services_Blogging_ExtendedDriver
 {
     /**
-    *   Requests shall be sent to here
+    * Requests shall be sent to here
     */
     const XML_RPC_SERVER = 'http://www.livejournal.com';
     const XML_RPC_PATH   = '/interface/xmlrpc';
 
     /**
-    *   Internal list with user data.
-    *   @var array
+    * Internal list with user data.
+    * @var array
     */
-    protected $userdata = array();
+    protected $userdata                  = array();
 
     protected $arSupportedPostProperties = array(
         Services_Blogging_Post::TITLE,
@@ -40,17 +41,17 @@ class Services_Blogging_Driver_LiveJournal
 
 
     /**
-    *   Constructor for the LiveJournal driver.
+    * Constructor for the LiveJournal driver.
     *
-    *   If $server and $path are set to NULL, the default
-    *    blogger.com address is used.
+    * If $server and $path are set to NULL, the default
+    *  blogger.com address is used.
     *
-    *   @param   string  $user       The username of the blog account.
-    *   @param   string  $pass       The password of the blog account.
-    *   @param   string  $server     The URI of the server to connect to.
-    *   @param   string  $path       The path to the XML-RPC server script.
+    * @param string $user   The username of the blog account.
+    * @param string $pass   The password of the blog account.
+    * @param string $server The URI of the server to connect to.
+    * @param string $path   The path to the XML-RPC server script.
     *
-    *   @throws Services_Blogging_Exception  If authentication fails
+    * @throws Services_Blogging_Exception If authentication fails
     */
     public function __construct($user, $pass, $server = null, $path = null)
     {
@@ -59,10 +60,10 @@ class Services_Blogging_Driver_LiveJournal
             $path   = self::XML_RPC_PATH;
         }
         $this->userdata = array(
-            'user'  => $user,
-            'pass'  => $pass,
-            'server'=> $server,
-            'path'  => $path,
+            'user'      => $user,
+            'pass'      => $pass,
+            'server'    => $server,
+            'path'      => $path,
             'rpc_user'  => new XML_RPC_Value($user, 'string'),
             'rpc_pass'  => new XML_RPC_Value($pass, 'string'),
         );
@@ -73,7 +74,7 @@ class Services_Blogging_Driver_LiveJournal
             $this->userdata['server']
         );
 
-        $authdata = $this->getAuthData();
+        $authdata     = $this->getAuthData();
         $authenticate = new XML_RPC_Message(
             'LJ.XMLRPC.login',
             array(
@@ -110,7 +111,9 @@ class Services_Blogging_Driver_LiveJournal
     {
         //get challenge for authentication
         $authenticate = new XML_RPC_Message('LJ.XMLRPC.getchallenge', array());
-        $response     = Services_Blogging_XmlRpc::sendRequest($authenticate, $this->rpc_client);
+        $response     = Services_Blogging_XmlRpc::sendRequest(
+            $authenticate, $this->rpc_client
+        );
 
         return array(
             'challenge' => $response['challenge'],
@@ -123,11 +126,13 @@ class Services_Blogging_Driver_LiveJournal
 
 
     /**
-    *   Save a new post into the blog.
+    * Save a new post into the blog.
     *
-    *   @param Services_Blogging_Post $post     Post object to put online
+    * @param Services_Blogging_Post $post Post object to put online
     *
-    *   @throws Services_Blogging_Exception If an error occured
+    * @return void
+    *
+    * @throws Services_Blogging_Exception If an error occured
     */
     public function savePost(Services_Blogging_Post $post)
     {
@@ -164,7 +169,9 @@ class Services_Blogging_Driver_LiveJournal
                 )
             );
 
-            $arData = Services_Blogging_XmlRpc::sendRequest($request, $this->rpc_client);
+            $arData = Services_Blogging_XmlRpc::sendRequest(
+                $request, $this->rpc_client
+            );
             $post->setId($arData['itemid']);
             $post->{Services_Blogging_Post::URL} = $arData['url'];
         } else {
@@ -195,29 +202,32 @@ class Services_Blogging_Driver_LiveJournal
                 )
             );
 
-            $arData = Services_Blogging_XmlRpc::sendRequest($request, $this->rpc_client);
+            $arData = Services_Blogging_XmlRpc::sendRequest(
+                $request, $this->rpc_client
+            );
         }
     }//public function savePost(Services_Blogging_Post $post)
 
 
 
     /**
-    *   Delete a given post.
+    * Delete a given post.
     *
-    *   @param mixed  $post   Services_Blogging_Post object to delete,
-    *                          or post id (integer) to delete
-    *   @return boolean     True if deleted, false if not.
+    * @param mixed $post Services_Blogging_Post object to delete,
+    *                     or post id (integer) to delete
+    *
+    * @return boolean True if deleted, false if not.
     */
     public function deletePost($post)
     {
         if (!($post instanceof Services_Blogging_Post)) {
             $nPostId = $post;
-            $post = new Services_Blogging_Post();
+            $post    = new Services_Blogging_Post();
             $post->setId($nPostId);
         }
         /**
-        *   In LiveJournal, posts are deleted by emptying
-        *   some fields
+        * In LiveJournal, posts are deleted by emptying
+        * some fields
         */
         $post->{Services_Blogging_Post::CONTENT} = '';
         $post->{Services_Blogging_Post::TITLE}   = '';
@@ -233,16 +243,17 @@ class Services_Blogging_Driver_LiveJournal
     * the Services_Blogging_Post class; given the unique post id which is passed
     * as a parameter to the function.
     *
-    * @param   string  $id         The PostID of the post to be retrieved.
-    * @return  Services_Blogging_Post   The elements of the post returned as an
-    *                                   object of the Services_Blogging_Post class.
+    * @param string $id The PostID of the post to be retrieved.
     *
-    * @throws Services_Blogging_Exception  If the post does not exist
+    * @return Services_Blogging_Post The elements of the post returned as an
+    *                                object of the Services_Blogging_Post class.
+    *
+    * @throws Services_Blogging_Exception If the post does not exist
     */
     public function getPost($id)
     {
         $authdata = $this->getAuthData();
-        $request = new XML_RPC_Message('LJ.XMLRPC.getevents',
+        $request  = new XML_RPC_Message('LJ.XMLRPC.getevents',
             array(
                 new XML_RPC_Value(
                     array(
@@ -259,9 +270,13 @@ class Services_Blogging_Driver_LiveJournal
             )
         );
 
-        $arData = Services_Blogging_XmlRpc::sendRequest($request, $this->rpc_client);
+        $arData = Services_Blogging_XmlRpc::sendRequest(
+            $request, $this->rpc_client
+        );
         if (count($arData['events']) == 0) {
-            throw new Services_Blogging_Exception('Post does not exist', self::ERROR_POSTDOESNTEXIST);
+            throw new Services_Blogging_Exception(
+                'Post does not exist', self::ERROR_POSTDOESNTEXIST
+            );
         }
 
         return $this->convertStructToPost(reset($arData['events']));
@@ -270,13 +285,13 @@ class Services_Blogging_Driver_LiveJournal
 
 
     /**
-    *   Returns an array of recent posts as Services_Blogging_Post objects
+    * Returns an array of recent posts as Services_Blogging_Post objects
     *
-    *   @param   int     $number     The number of posts to be retrieved.
-    *                                   Defaults to 15
+    * @param int $number The number of posts to be retrieved.
+    *                     Defaults to 15
     *
-    *   @return  Array   An array of objects of the Services_Blogging_Post class that
-    *                  correspond to the number of posts requested.
+    * @return Array An array of objects of the Services_Blogging_Post class that
+    *                correspond to the number of posts requested.
     */
     public function getRecentPosts($number = 15)
     {
@@ -285,7 +300,7 @@ class Services_Blogging_Driver_LiveJournal
         }
 
         $authdata = $this->getAuthData();
-        $request = new XML_RPC_Message('LJ.XMLRPC.getevents',
+        $request  = new XML_RPC_Message('LJ.XMLRPC.getevents',
             array(
                 new XML_RPC_Value(
                     array(
@@ -302,10 +317,12 @@ class Services_Blogging_Driver_LiveJournal
             )
         );
 
-        $arData = Services_Blogging_XmlRpc::sendRequest($request, $this->rpc_client);
+        $arData = Services_Blogging_XmlRpc::sendRequest(
+            $request, $this->rpc_client
+        );
         $arPosts = array();
         foreach ($arData['events'] as $event) {
-            $post = $this->convertStructToPost($event);
+            $post               = $this->convertStructToPost($event);
             $arPosts[$post->id] = $post;
         }
 
@@ -315,14 +332,14 @@ class Services_Blogging_Driver_LiveJournal
 
 
     /**
-    *   The getRecentPostTitles method is intended to retrieve the given number of
-    *   post titles from a blog.
-    *   The posts themselves can be retrieved with getPost() or getPosts().
+    * The getRecentPostTitles method is intended to retrieve the given number of
+    * post titles from a blog.
+    * The posts themselves can be retrieved with getPost() or getPosts().
     *
-    *   @param   int     $number     The number of posts to be retrieved.
+    * @param int $number The number of posts to be retrieved.
     *
-    *   @return  Array   An array of int => strings representing the 
-    *                   post ids (key) and their title (value).
+    * @return Array An array of int => strings representing the
+    *                post ids (key) and their title (value).
     */
     public function getRecentPostTitles($number = 15)
     {
@@ -331,7 +348,7 @@ class Services_Blogging_Driver_LiveJournal
         }
 
         $authdata = $this->getAuthData();
-        $request = new XML_RPC_Message('LJ.XMLRPC.getevents',
+        $request  = new XML_RPC_Message('LJ.XMLRPC.getevents',
             array(
                 new XML_RPC_Value(
                     array(
@@ -351,7 +368,9 @@ class Services_Blogging_Driver_LiveJournal
             )
         );
 
-        $arData = Services_Blogging_XmlRpc::sendRequest($request, $this->rpc_client);
+        $arData = Services_Blogging_XmlRpc::sendRequest(
+            $request, $this->rpc_client
+        );
         $arTitles = array();
         foreach ($arData['events'] as $event) {
             $arTitles[$event['itemid']] = $event['event'];
@@ -363,11 +382,11 @@ class Services_Blogging_Driver_LiveJournal
 
 
     /**
-    *   Returns an array of strings thay define
-    *   the properties that a post to this blog may
-    *   have.
+    * Returns an array of strings thay define
+    * the properties that a post to this blog may
+    * have.
     *
-    *   @return array   Array of strings
+    * @return array Array of strings
     */
     public function getSupportedPostProperties()
     {
@@ -377,12 +396,12 @@ class Services_Blogging_Driver_LiveJournal
 
 
     /**
-    *   Checks if the given property name/id is supported
-    *   for this driver.
+    * Checks if the given property name/id is supported
+    * for this driver.
     *
-    *   @param string $strProperty  Property name/id to check
+    * @param string $strProperty Property name/id to check
     *
-    *   @return boolean     If the property is supported
+    * @return boolean If the property is supported
     */
     public function isPostPropertySupported($strProperty)
     {
@@ -392,32 +411,34 @@ class Services_Blogging_Driver_LiveJournal
 
 
     /**
-    *   Converts a struct returned by the webservice to
-    *   a Services_Blogging_Post object
+    * Converts a struct returned by the webservice to
+    * a Services_Blogging_Post object
     *
-    *   @param array    $arStruct   Struct to convert
-    *   @return Services_Blogging_Post  Converted post
+    * @param array $arStruct Struct to convert
+    *
+    * @return Services_Blogging_Post Converted post
     */
     protected function convertStructToPost($arStruct)
     {
         $post = new Services_Blogging_Post($this);
+
         $post->{Services_Blogging_Post::CONTENT} = $arStruct['event'];
         $post->{Services_Blogging_Post::TITLE}   = $arStruct['subject'];
         //0123456789012345678
         //2006-05-13 21:42:00
-        $post->{Services_Blogging_Post::DATE}    = mktime(
-            substr($arStruct['eventtime'], 11, 2),//hour
-            substr($arStruct['eventtime'], 14, 2),//minute
-            substr($arStruct['eventtime'], 17, 2),//second
-            substr($arStruct['eventtime'],  5, 2),//month
-            substr($arStruct['eventtime'],  8, 2),//day
-            substr($arStruct['eventtime'],  0, 4)//year
+        $post->{Services_Blogging_Post::DATE} = mktime(
+            substr($arStruct['eventtime'], 11, 2), //hour
+            substr($arStruct['eventtime'], 14, 2), //minute
+            substr($arStruct['eventtime'], 17, 2), //second
+            substr($arStruct['eventtime'],  5, 2), //month
+            substr($arStruct['eventtime'],  8, 2), //day
+            substr($arStruct['eventtime'],  0, 4)  //year
         );
-        $post->{Services_Blogging_Post::URL}   = $arStruct['url'];
+        $post->{Services_Blogging_Post::URL} = $arStruct['url'];
         $post->setId($arStruct['itemid']);
 
         return $post;
     }//protected function convertStructToPost($arStruct)
 
-}//class Services_Blogging_Driver_Blogger extends Services_Blogging_Driver implements Services_Blogging_MultipleBlogsInterface
+}//class Services_Blogging_Driver_Blogger
 ?>
