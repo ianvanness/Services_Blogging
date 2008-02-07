@@ -33,12 +33,17 @@ class Services_Blogging
 {
 
     /**
-    * Exception codes and messages that are thrown by the class.
-    */
+     * Exception codes and messages that are thrown by the class.
+     */
     const ERROR_DRIVER                 = 101;
     const ERROR_BLOGHASNTAUTODISCOVERY = 102;
     const ERROR_NOSUPPORTEDDRIVER      = 103;
-
+    const ERROR_NOTSUPPORTED           = 104;
+    
+    /**
+     * USER_AGENT to send along during requests.
+     */
+    const USER_AGENT = 'PHP/Services_Blogging @package_version@';
 
 
     /**

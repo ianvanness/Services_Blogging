@@ -75,16 +75,33 @@ class Services_Blogging_Post
     const CATEGORIES = 'categories';
 
     /**
+     * String (url) when you post a link.
+     */
+    const LINK = 'link';
+
+    /**
+     * String (e.g. url of a picture, or a source of a quote)
+     */
+    const SOURCE = 'source';
+    
+    /**
+     * String binary of a file upload.
+     */
+    const DATA = 'data';
+    
+    /**
+     * String.
+     */
+    const CAPTION = 'caption';
+
+    /**
     * Not used yet
     */
-    const LINK      = 'link';
     const AUTHOR    = 'author';
     const CATEGORY  = 'categories';
     const COMMENTS  = 'comments';
     const ENCLOSURE = 'enclosure';
     const GUID      = 'guid';
-    const SOURCE    = 'source';
-
 
 
     /**
