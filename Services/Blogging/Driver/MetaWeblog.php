@@ -1,5 +1,5 @@
 <?php
-require_once 'Services/Blogging/Exception.php';
+require_once 'Services/Blogging/Driver/Exception.php';
 require_once 'Services/Blogging/ExtendedDriver.php';
 require_once 'Services/Blogging/Post.php';
 require_once 'Services/Blogging/XmlRpc.php';

@@ -1,6 +1,6 @@
 <?php
 require_once 'Services/Blogging/ExtendedDriver.php';
-require_once 'Services/Blogging/Exception.php';
+require_once 'Services/Blogging/Driver/Exception.php';
 require_once 'Services/Blogging/XmlRpc.php';
 require_once 'XML/RPC.php';
 
@@ -274,7 +274,7 @@ class Services_Blogging_Driver_LiveJournal
             $request, $this->rpc_client
         );
         if (count($arData['events']) == 0) {
-            throw new Services_Blogging_Exception(
+            throw new Services_Blogging_Driver_Exception(
                 'Post does not exist', self::ERROR_POSTDOESNTEXIST
             );
         }

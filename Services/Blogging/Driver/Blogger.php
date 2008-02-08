@@ -1,6 +1,6 @@
 <?php
 require_once 'Services/Blogging/Driver.php';
-require_once 'Services/Blogging/Exception.php';
+require_once 'Services/Blogging/Driver/Exception.php';
 require_once 'Services/Blogging/MultipleBlogsInterface.php';
 require_once 'Services/Blogging/XmlRpc.php';
 require_once 'XML/RPC.php';
@@ -287,7 +287,7 @@ class Services_Blogging_Driver_Blogger
     public function getTemplate($tempType)
     {
         if ($tempType != 'main' && $tempType != 'archiveIndex') {
-            throw new Services_Blogging_Exception(
+            throw new Services_Blogging_Driver_Exception(
                 'Unknown template "' . $tempType . '"',
                 self::ERROR_UNKNOWN_TEMPLATE
             );
@@ -327,7 +327,7 @@ class Services_Blogging_Driver_Blogger
     public function setTemplate($tempType, $template)
     {
         if ($tempType != 'main' && $tempType != 'archiveIndex') {
-            throw new Services_Blogging_Exception(
+            throw new Services_Blogging_Driver_Exception(
                 'Unknown template "' . $tempType . '"',
                 self::ERROR_UNKNOWN_TEMPLATE
             );
