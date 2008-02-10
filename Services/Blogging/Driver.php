@@ -13,11 +13,15 @@ require_once 'Services/Blogging/Post.php';
 */
 abstract class Services_Blogging_Driver
 {
-
     /**
     * Error code: Username or password doesn't exist/are wrong
     */
     const ERROR_USERIDPASS = 102;
+
+    /**
+    * Error code: Unsupported post type used in createPost()
+    */
+    const ERROR_WRONGPOSTTYPE = 103;
 
 
 
@@ -44,15 +48,16 @@ abstract class Services_Blogging_Driver
 
 
 
-
     /**
     * Returns an array of strings thay define
-    * the properties that a post to this blog may
-    * have.
+    * the properties that a post to this blog may have.
+    *
+    * @param string $strPostType Type of post to create.
+    *                            @see getSupportedPostTypes()
     *
     * @return array Array of strings
     */
-    abstract public function getSupportedPostProperties();
+    abstract public function getSupportedPostProperties($strPostType = 'post');
 
 
 
@@ -61,10 +66,14 @@ abstract class Services_Blogging_Driver
     * for this driver.
     *
     * @param string $strProperty Property name/id to check
+    * @param string $strPostType Type of post to create.
+    *                            @see getSupportedPostTypes()
     *
     * @return boolean If the property is supported
     */
-    abstract public function isPostPropertySupported($strProperty);
+    abstract public function isPostPropertySupported(
+        $strProperty, $strPostType = 'post'
+    );
 
 
 
@@ -72,12 +81,52 @@ abstract class Services_Blogging_Driver
     * Creates a new post object and returns that.
     * Automatically sets the driver object in the post.
     *
+    * Needs to be overwritten by drivers supporting multiple post types.
+    *
+    * @param string $strPostType Type of post to create.
+    *                            @see getSupportedPostTypes()
+    *
     * @return Services_Blogging_Post New post object
+    *
+    * @throws Services_Blogging_Driver_Exception When an unsupported post
+    *  type is used.
     */
-    public function createNewPost()
+    public function createNewPost($strPostType = 'post')
     {
+        //this does not make much sense for drivers with only one
+        // post type, but it helps to keep apps consistent by
+        // validating parameters
+        $arSupportedTypes = $this->getSupportedPostTypes();
+        if (!in_array($strPostType, $arSupportedTypes)) {
+            throw new Services_Blogging_Driver_Exception(
+                'Unsupported post type "' . $strPostType . '"',
+                self::ERROR_WRONGPOSTTYPE
+            );
+        }
+
+        //when overwriting this method, create the different post instances
+        // here
         return new Services_Blogging_Post($this);
-    }//public function createNewPost()
+    }//public function createNewPost(..)
+
+
+
+    /**
+    * Returns an array of supported post types. Pass one of them
+    * to createNewPost() to instantiate such a post object.
+    *
+    * Useful for drivers that support multiple post types like
+    * normal post ("post"), video and such. Most drivers support posts
+    * only.
+    *
+    * Needs to be overwritten by drivers supporting post types.
+    *
+    * @return array Array of strings (post types)
+    */
+    public function getSupportedPostTypes()
+    {
+        return array('post');
+    }//public function getSupportedPostTypes()
 
 }//abstract class Services_Blogging_Driver
 ?>

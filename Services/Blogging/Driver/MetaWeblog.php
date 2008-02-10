@@ -238,12 +238,15 @@ class Services_Blogging_Driver_MetaWeblog extends Services_Blogging_ExtendedDriv
     * the properties that a post to this blog may
     * have.
     *
+    * @param string $strPostType Type of post to create.
+    *                            @see getSupportedPostTypes()
+    *
     * @return array Array of strings
     */
-    public function getSupportedPostProperties()
+    public function getSupportedPostProperties($strPostType = 'post')
     {
         return $this->arSupportedPostProperties;
-    }//public function getSupportedPostProperties()
+    }//public function getSupportedPostProperties(..)
 
 
 
@@ -252,13 +255,15 @@ class Services_Blogging_Driver_MetaWeblog extends Services_Blogging_ExtendedDriv
     * for this driver.
     *
     * @param string $strProperty Property name/id to check
+    * @param string $strPostType Type of post to create.
+    *                            @see getSupportedPostTypes()
     *
     * @return boolean If the property is supported
     */
-    public function isPostPropertySupported($strProperty)
+    public function isPostPropertySupported($strProperty, $strPostType = 'post')
     {
         return in_array($strProperty, $this->arSupportedPostProperties);
-    }//public function isPostPropertySupported($strProperty)
+    }//public function isPostPropertySupported(..)
 
 
 

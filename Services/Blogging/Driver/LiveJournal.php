@@ -239,7 +239,7 @@ class Services_Blogging_Driver_LiveJournal
 
 
     /**
-    * The getPost method is intended to retrive a given post as an object of
+    * The getPost method is intended to retrieve a given post as an object of
     * the Services_Blogging_Post class; given the unique post id which is passed
     * as a parameter to the function.
     *
@@ -386,12 +386,15 @@ class Services_Blogging_Driver_LiveJournal
     * the properties that a post to this blog may
     * have.
     *
+    * @param string $strPostType Type of post to create.
+    *                            @see getSupportedPostTypes()
+    *
     * @return array Array of strings
     */
-    public function getSupportedPostProperties()
+    public function getSupportedPostProperties($strPostType = 'post')
     {
         return $this->arSupportedPostProperties;
-    }//public function getSupportedPostProperties()
+    }//public function getSupportedPostProperties(..)
 
 
 
@@ -400,13 +403,15 @@ class Services_Blogging_Driver_LiveJournal
     * for this driver.
     *
     * @param string $strProperty Property name/id to check
+    * @param string $strPostType Type of post to create.
+    *                            @see getSupportedPostTypes()
     *
     * @return boolean If the property is supported
     */
-    public function isPostPropertySupported($strProperty)
+    public function isPostPropertySupported($strProperty, $strPostType = 'post')
     {
         return in_array($strProperty, $this->arSupportedPostProperties);
-    }//public function isPostPropertySupported($strProperty)
+    }//public function isPostPropertySupported(..)
 
 
 

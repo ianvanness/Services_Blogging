@@ -183,12 +183,15 @@ class Services_Blogging_Driver_Blogger
     * the properties that a post to this blog may
     * have.
     *
+    * @param string $strPostType Type of post to create.
+    *                            @see getSupportedPostTypes()
+    *
     * @return array Array of strings
     */
-    public function getSupportedPostProperties()
+    public function getSupportedPostProperties($strPostType = 'post')
     {
         return array(Services_Blogging_Post::CONTENT);
-    }//public function getSupportedPostProperties()
+    }//public function getSupportedPostProperties(..)
 
 
 
@@ -197,13 +200,15 @@ class Services_Blogging_Driver_Blogger
     * for this driver.
     *
     * @param string $strProperty Property name/id to check
+    * @param string $strPostType Type of post to create.
+    *                            @see getSupportedPostTypes()
     *
     * @return boolean If the property is supported
     */
-    public function isPostPropertySupported($strProperty)
+    public function isPostPropertySupported($strProperty, $strPostType = 'post')
     {
         return $strProperty == Services_Blogging_Post::CONTENT;
-    }//public function isPostPropertySupported($strProperty)
+    }//public function isPostPropertySupported(..)
 
 
 
