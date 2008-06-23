@@ -18,9 +18,9 @@
   <email>cweiske@php.net</email>
   <active>yes</active>
  </lead>
- <date>2008-03-24</date>
+ <date>2008-06-23</date>
  <version>
-  <release>0.2.0</release>
+  <release>0.2.1</release>
   <api>0.2.0</api>
  </version>
  <stability>
@@ -30,9 +30,7 @@
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL Version 2.1</license>
 
  <notes>
-  - Support for different blog post types
-  - User agent
-  - Some more post constants
+- Forgot to add Exception.php
  </notes>
 
  <contents>
@@ -50,6 +48,7 @@
         <file name="XmlRpc.php" role="php"/>
         <dir name="Driver">
           <file name="Blogger.php" role="php"/>
+          <file name="Exception.php" role="php"/>
           <file name="LiveJournal.php" role="php"/>
           <file name="MetaWeblog.php" role="php"/>
         </dir>
@@ -81,6 +80,21 @@
  <phprelease />
 
  <changelog>
+
+  <release>
+   <version>
+    <release>0.2.1</release>
+    <api>0.2.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2008-06-23</date>
+   <notes>
+- Forgot to add Exception.php
+   </notes>
+  </release>
 
   <release>
    <version>
