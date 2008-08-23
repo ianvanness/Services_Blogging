@@ -23,7 +23,7 @@ class Services_Blogging_MediaObject
 
     public function __set($strProperty, $value)
     {
-        if (!isset($this->values[$strProperty])) {
+        if (!array_key_exists($strProperty, $this->values)) {
             require_once 'Services/Blogging/Exception.php';
             throw new Services_Blogging_Exception(
                 'Invalid property "' . $strProperty . '"',
@@ -37,7 +37,7 @@ class Services_Blogging_MediaObject
 
     public function __get($strProperty)
     {
-        if (!isset($this->values[$strProperty])) {
+        if (!array_key_exists($strProperty, $this->values)) {
             require_once 'Services/Blogging/Exception.php';
             throw new Services_Blogging_Exception(
                 'Invalid property "' . $strProperty . '"',
