@@ -99,7 +99,9 @@ class Services_Blogging_Driver_LiveJournal
                 'auth_response'  => new XML_RPC_Value(
                     $authdata['response'] , 'string'
                 ),
-                'clientversion'  => new XML_RPC_Value('PHP-Services_Blogging/0.0.1')
+                'clientversion'  => new XML_RPC_Value(
+                    'PHP/Services_Blogging-@package_version@'
+                )
             ),
             'struct'
         );

@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<package packagerversion="1.4.8" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+<package packagerversion="1.4.8" version="2.0"
+ xmlns="http://pear.php.net/dtd/package-2.0"
+ xmlns:tasks="http://pear.php.net/dtd/tasks-1.0"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+  http://pear.php.net/dtd/tasks-1.0.xsd
+  http://pear.php.net/dtd/package-2.0
+  http://pear.php.net/dtd/package-2.0.xsd"
+>
  <name>Services_Blogging</name>
  <channel>pear.php.net</channel>
  <summary>Access your blog with PHP</summary>
  <description>
   API for accessing blog systems such as blogger, livejournal and others.
  </description>
+
  <lead>
   <name>Anant Narayanan</name>
   <user>anant</user>
@@ -18,7 +27,9 @@
   <email>cweiske@php.net</email>
   <active>yes</active>
  </lead>
+
  <date>2008-11-29</date>
+
  <version>
   <release>0.2.3</release>
   <api>0.2.0</api>
@@ -27,37 +38,45 @@
   <release>beta</release>
   <api>beta</api>
  </stability>
+
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL Version 2.1</license>
 
  <notes>
 - Fix bug #15028: URL with trailing slash gives error [cweiske]
+- Coding standards cleanup
+- Add more docblocks, enhance existing ones (e.g. factory exceptions)
+- Set client version correctly
  </notes>
 
  <contents>
   <dir name="/" baseinstalldir="/">
     <dir name="Services">
-      <file name="Blogging.php" role="php"/>
+      <file role="php" name="Blogging.php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <dir name="Blogging">
-        <file name="Blog.php" role="php"/>
-        <file name="Driver.php" role="php"/>
-        <file name="Exception.php" role="php"/>
-        <file name="ExtendedDriver.php" role="php"/>
-        <file name="MediaObject.php" role="php"/>
-        <file name="MultipleBlogsInterface.php" role="php"/>
-        <file name="Post.php" role="php"/>
-        <file name="XmlRpc.php" role="php"/>
+        <file role="php" name="Blog.php"/>
+        <file role="php" name="Driver.php"/>
+        <file role="php" name="Exception.php"/>
+        <file role="php" name="ExtendedDriver.php"/>
+        <file role="php" name="MediaObject.php"/>
+        <file role="php" name="MultipleBlogsInterface.php"/>
+        <file role="php" name="Post.php"/>
+        <file role="php" name="XmlRpc.php"/>
         <dir name="Driver">
-          <file name="Blogger.php" role="php"/>
-          <file name="Exception.php" role="php"/>
-          <file name="LiveJournal.php" role="php"/>
-          <file name="MetaWeblog.php" role="php"/>
+          <file role="php" name="Blogger.php"/>
+          <file role="php" name="Exception.php"/>
+          <file role="php" name="LiveJournal.php">
+            <tasks:replace from="@package_version@" to="version" type="package-info" />
+          </file>
+          <file role="php" name="MetaWeblog.php"/>
         </dir>
       </dir>
     </dir>
     <dir name="examples" baseinstalldir="Services_Blogging">
-      <file name="autodiscover.php" role="doc"/>
-      <file name="blogger.cw.php" role="doc"/>
-      <file name="livejournal.cw.php" role="doc"/>
+      <file role="doc" name="autodiscover.php"/>
+      <file role="doc" name="blogger.cw.php"/>
+      <file role="doc" name="livejournal.cw.php"/>
     </dir>
   </dir>
  </contents>
@@ -94,6 +113,9 @@
    <date>2008-08-29</date>
    <notes>
 - Fix bug #15028: URL with trailing slash gives error [cweiske]
+- Coding standards cleanup
+- Add more docblocks, enhance existing ones (e.g. factory exceptions)
+- Set client version correctly
    </notes>
   </release>
 

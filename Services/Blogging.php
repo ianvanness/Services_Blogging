@@ -70,7 +70,7 @@ class Services_Blogging
     /**
      * USER_AGENT to send along during requests.
      */
-    const USER_AGENT = 'PHP/Services_Blogging @package_version@';
+    const USER_AGENT = 'PHP/Services_Blogging-@package_version@';
 
 
     /**
