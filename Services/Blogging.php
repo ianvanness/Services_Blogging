@@ -39,7 +39,7 @@ class Services_Blogging
     const ERROR_BLOGHASNTAUTODISCOVERY = 102;
     const ERROR_NOSUPPORTEDDRIVER      = 103;
     const ERROR_NOTSUPPORTED           = 104;
-    
+
     /**
      * USER_AGENT to send along during requests.
      */
@@ -55,7 +55,7 @@ class Services_Blogging
     *                          or "metaWeblog".
     * @param string $username The username of the blog account to connect to.
     * @param string $password The password of the blog account to connect to.
-    * @param string $server   The URI of the blog's server.
+    * @param string $server   The URI of the blog's server with protocol.
     * @param string $path     The location of the XML-RPC server script.
     *
     * @return Services_Blogging_Driver Blogging driver instance
@@ -68,6 +68,11 @@ class Services_Blogging
             throw new Services_Blogging_Exception(
                 'Invalid driver "' . $driver . '" specified!', self::ERROR_DRIVER
             );
+        }
+
+        //handle slighly wrong user input: no path but slash in server
+        if ($path == null && substr($server, -1) == '/') {
+            $server = substr($server, 0, -1);
         }
 
         $class = new $strClass($username, $password, $server, $path);

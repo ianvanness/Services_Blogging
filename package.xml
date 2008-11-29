@@ -18,9 +18,9 @@
   <email>cweiske@php.net</email>
   <active>yes</active>
  </lead>
- <date>2008-08-23</date>
+ <date>2008-11-29</date>
  <version>
-  <release>0.2.2</release>
+  <release>0.2.3</release>
   <api>0.2.0</api>
  </version>
  <stability>
@@ -30,7 +30,7 @@
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL Version 2.1</license>
 
  <notes>
-- Fix problem in MediaObject.php, thanks to our demanding chinese friends!
+- Fix bug #15028: URL with trailing slash gives error [cweiske]
  </notes>
 
  <contents>
@@ -77,9 +77,25 @@
    </package>
   </required>
  </dependencies>
+
  <phprelease />
 
  <changelog>
+
+  <release>
+   <version>
+    <release>0.2.3</release>
+    <api>0.2.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2008-08-29</date>
+   <notes>
+- Fix bug #15028: URL with trailing slash gives error [cweiske]
+   </notes>
+  </release>
 
   <release>
    <version>
