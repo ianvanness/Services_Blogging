@@ -1,4 +1,18 @@
 <?php
+/**
+* Part of the Services_Blogging package.
+*
+* PHP version 5
+*
+* @category Services
+* @package  Services_Blogging
+* @author   Anant Narayanan <anant@php.net>
+* @author   Christian Weiske <cweiske@php.net>
+* @license  http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+* @version  CVS: $Id$
+* @link     http://pear.php.net/package/Services_Blogging
+*/
+
 require_once 'Services/Blogging/Driver.php';
 
 /**
@@ -83,12 +97,12 @@ class Services_Blogging_Post
      * String (e.g. url of a picture, or a source of a quote)
      */
     const SOURCE = 'source';
-    
+
     /**
      * String binary of a file upload.
      */
     const DATA = 'data';
-    
+
     /**
      * String.
      */

@@ -1,4 +1,18 @@
 <?php
+/**
+* Part of the Services_Blogging package.
+*
+* PHP version 5
+*
+* @category Services
+* @package  Services_Blogging
+* @author   Anant Narayanan <anant@php.net>
+* @author   Christian Weiske <cweiske@php.net>
+* @license  http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+* @version  CVS: $Id$
+* @link     http://pear.php.net/package/Services_Blogging
+*/
+
 require_once 'Services/Blogging/Blog.php';
 
 /**
