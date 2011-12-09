@@ -50,8 +50,18 @@ class Services_Blogging_Driver_LiveJournal
         Services_Blogging_Post::DATE,
         Services_Blogging_Post::URL,
         Services_Blogging_Post::CATEGORIES,
+        Services_Blogging_Post::LOCATION,
+        Services_Blogging_Post::MOOD,
+        Services_Blogging_Post::MUSIC,
+        Services_Blogging_Post::ALLOW_COMMENTS,
+        Services_Blogging_Post::AUTO_FORMAT,
     );
 
+    protected $field_correspondence = array(
+        Services_Blogging_Post::LOCATION => 'current_location',
+        Services_Blogging_Post::MOOD => 'current_mood',
+        Services_Blogging_Post::MUSIC => 'current_music',
+    );
 
 
     /**
@@ -175,13 +185,32 @@ class Services_Blogging_Driver_LiveJournal
             $time = time();
         }
 
-        // Fill in the data
+        // Fill in metadata
         $metadata = array();
         if($post->{Services_Blogging_Post::CATEGORIES})
         {
             $categories = $post->{Services_Blogging_Post::CATEGORIES};
             $metadata['taglist'] = new XML_RPC_Value(implode(',', $categories), 'string');
         }
+        foreach($this->field_correspondence as $post_field => $lj_field)
+        {
+            if($post->{$post_field})
+            {
+                $metadata[$lj_field] = new XML_RPC_Value($post->{$post_field}, 'string');
+            }
+        }
+        if($post->{Services_Blogging_Post::ALLOW_COMMENTS} !== NULL)
+        {
+            $allow_comments = $post->{Services_Blogging_Post::ALLOW_COMMENTS};
+            $metadata['opt_nocomments'] = new XML_RPC_Value(intval(!$allow_comments), 'boolean');
+        }
+        if($post->{Services_Blogging_Post::AUTO_FORMAT} !== NULL)
+        {
+            $auto_format = $post->{Services_Blogging_Post::AUTO_FORMAT};
+            $metadata['opt_preformatted'] = new XML_RPC_Value(intval(!$auto_format), 'boolean');
+        }
+
+        // Fill the data array itself
         $data = array(
             'username'       => $this->userdata['rpc_user'],
             'auth_method'    => new XML_RPC_Value('challenge', 'string'),
@@ -484,11 +513,28 @@ class Services_Blogging_Driver_LiveJournal
         $post->{Services_Blogging_Post::URL} = $arStruct['url'];
         if($arStruct['props'])
         {
-            if($arStruct['props']['taglist'])
+            $props = $arStruct['props'];
+            if($props['taglist'])
             {
-                $post->{Services_Blogging_Post::CATEGORIES} = explode(',', $arStruct['props']['taglist']);
+                $post->{Services_Blogging_Post::CATEGORIES} = explode(',', $props['taglist']);
+            }
+            foreach($this->field_correspondence as $post_field => $lj_field)
+            {
+                if(isset($props[$lj_field]))
+                {
+                    $post->{$post_field} = $props[$lj_field];
+                }
+            }
+            if($props['opt_nocomments'] !== NULL)
+            {
+                $post->{Services_Blogging_Post::ALLOW_COMMENTS} = !($props['opt_nocomments']);
+            }
+            if($props['opt_preformatted'] !== NULL)
+            {
+                $post->{Services_Blogging_Post::AUTO_FORMAT} = !($props['opt_preformatted']);
             }
         }
+
         $post->setId($arStruct['itemid']);
 
         return $post;

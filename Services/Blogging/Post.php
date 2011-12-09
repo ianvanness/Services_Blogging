@@ -109,6 +109,34 @@ class Services_Blogging_Post
     const CAPTION = 'caption';
 
     /**
+     * String.
+     */
+    const LOCATION = 'location';
+
+    /**
+     * String.
+     */
+    const MOOD = 'mood';
+
+    /**
+     * String.
+     */
+    const MUSIC = 'music';
+
+    /**
+     * Boolean.
+     */
+    const ALLOW_COMMENTS = 'allow_comments';
+
+    /**
+     * Boolean.
+     * 
+     * Whether this post should be semi-automatically formatted,
+     * or already contains HTML.
+     */
+    const AUTO_FORMAT = 'auto_format';
+
+    /**
     * Not used yet
     */
     const AUTHOR    = 'author';
