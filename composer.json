@@ -1,0 +1,36 @@
+{
+    "authors": [
+        {
+            "email": "anant@php.net",
+            "name": "Anant Narayanan",
+            "role": "Lead"
+        },
+        {
+            "email": "cweiske@php.net",
+            "name": "Christian Weiske",
+            "role": "Lead"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Services_Blogging": "./"
+        }
+    },
+    "description": "More info available on: http://pear.php.net/package/Services_Blogging",
+    "include-path": [
+        "./"
+    ],
+    "license": "LGPL Version 2.1",
+    "name": "pear/services_blogging",
+    "support": {
+        "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Services_Blogging",
+        "source": "https://github.com/pear/Services_Blogging"
+    },
+    "type": "library",
+    "require": {
+        "pear/pear_exception": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    }
+}
